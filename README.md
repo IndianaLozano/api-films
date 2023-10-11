@@ -25,6 +25,7 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[ORM Prisma](https://www.prisma.io/)
 
 ## Installation
 
