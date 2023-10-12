@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { FilmsService } from './films.service';
 
 @Controller('/films')
@@ -6,7 +6,12 @@ export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
 
   @Get('')
-  async getMovies() {
+  async getFilms() {
     return this.filmsService.getFilms();
+  }
+
+  @Get('/:id')
+  async getFilm(@Param('id') id: string) {
+    return this.filmsService.getFilm(id);
   }
 }
