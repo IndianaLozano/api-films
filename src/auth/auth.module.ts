@@ -4,8 +4,8 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
-import { RolesGuard } from 'src/roles.guard';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -16,15 +16,15 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '600s' },
     }),
     PrismaModule,
   ],
   providers: [
     AuthService,
     {
-      provide: RolesGuard,
-      useClass: RolesGuard,
+      provide: AuthGuard,
+      useClass: AuthGuard,
     },
   ],
   controllers: [AuthController],
