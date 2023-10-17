@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { HttpStatusCode } from 'axios';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -10,7 +10,6 @@ export class AuthMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     // GET access_token
     const token = req.headers.authorization?.split('Bearer ')[1];
-    console.log(jwtConstants.secret);
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -23,7 +22,14 @@ export class AuthMiddleware implements NestMiddleware {
         role: string;
       };
 
-      if (!decodedToken) return res.status(401).json({ message: 'Invalid token' });
+      if (!decodedToken) {
+        res.status(HttpStatusCode.Unauthorized).json({
+          message: 'Invalid token',
+          error: 'Unauthorized',
+          statusCode: HttpStatusCode.Unauthorized,
+        });
+        return res.end();
+      }
 
       // Verify if token contains role information
       if (!decodedToken.role) {
@@ -36,7 +42,9 @@ export class AuthMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       console.error(error);
-      return res.status(401).json({ message: 'Invalid token' });
+      return res
+        .status(401)
+        .json({ message: 'Invalid token', error: 'Unauthorized', statusCode: 401 });
     }
   }
 }

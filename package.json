@@ -6,6 +6,11 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "db:dev:up": "docker-compose up dev-db -d",
+    "db:dev:rm": "docker-compose down -v --remove-orphans",
+    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 1 && npm run db:dev:deploy",
+    "db:dev:migrate": "prisma migrate dev --name init",
+    "db:dev:deploy": "prisma migrate deploy",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
