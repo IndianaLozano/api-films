@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { FilmsModule } from './films/films.module';
 import { AuthMiddleware } from './auth/auth.middleware';
+// import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [UsersModule, AuthModule, FilmsModule],
