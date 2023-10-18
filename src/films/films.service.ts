@@ -1,9 +1,14 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import axios from 'axios';
 import { PrismaService } from '../prisma/prisma.service';
 import { Film } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { CreateFilmDto } from './dto';
+import { CreateFilmDto, UpdateFilmDto } from './dto';
 
 @Injectable()
 export class FilmsService {
@@ -61,5 +66,42 @@ export class FilmsService {
         throw error;
       }
     }
+  }
+
+  async deleteFilm(id: number) {
+    try {
+      console.log('Deleting film with id: ', id);
+      const deleteFilm = await this.prismaService.film.delete({
+        where: {
+          id: id,
+        },
+      });
+      console.log('Film with id: ' + id + ' deleted successfully');
+      return deleteFilm;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          // Prisma error code for "No record found for deletion"
+          throw new NotFoundException('Film with id: ' + id + ' not found');
+        }
+        console.log(error);
+        throw error;
+      } else {
+        console.log(error);
+        throw error;
+      }
+    }
+  }
+
+  async updateFilm(id: string, updateFilmDto: UpdateFilmDto) {
+    const filmId = Number(id);
+    const updateFilm = await this.prismaService.film.update({
+      where: {
+        id: filmId,
+      },
+      data: updateFilmDto,
+    });
+    return updateFilm;
   }
 }
