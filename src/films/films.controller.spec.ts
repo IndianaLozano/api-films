@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilmsController } from './films.controller';
 import { FilmsService } from './films.service';
+import { HttpStatus } from '@nestjs/common';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 describe('FilmsController', () => {
   let controller: FilmsController;
@@ -90,6 +92,28 @@ describe('FilmsController', () => {
       const result = await controller.getFilm(id);
 
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw an error if the film is not found', async () => {
+      const id = '0';
+
+      (filmsService.getFilm as jest.Mock).mockResolvedValue(null);
+
+      await expect(controller.getFilm(id)).rejects.toThrow(HttpErrorByCode[HttpStatus.NOT_FOUND]);
+    });
+
+    it('should throw an error if the film id is not a number', async () => {
+      const id = 'not a number';
+
+      await expect(controller.getFilm(id)).rejects.toThrow(HttpErrorByCode[HttpStatus.BAD_REQUEST]);
+    });
+
+    it('should throw an error if the role of the user is not Role.User', async () => {
+      const id = '0';
+
+      (filmsService.getFilm as jest.Mock).mockResolvedValue(null);
+
+      await expect(controller.getFilm(id)).rejects.toThrow(HttpErrorByCode[HttpStatus.NOT_FOUND]);
     });
   });
 });
