@@ -64,6 +64,10 @@ $ npm run test:cov
 - Endpoint for updating the information of an existing movie. Only "Administrators" should have access to this endpoint.
 - Endpoint for deleting a movie. Only "Administrators" should have access to this endpoint.
 
+## Swagger Documentation
+[Swagger UI](http://localhost:3000/api-films)
+[Generate and download a Swagger JSON file](http://localhost:3000/api-films-json)
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
