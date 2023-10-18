@@ -7,24 +7,26 @@ Backend that fetches information from the public Star Wars API and is used to cr
 
 [ORM Prisma](https://www.prisma.io/)
 
-Start DB:
+## Installation
+Run:
+
+```bash
+$ npm install
+```
+
+To start the DB, run:
 
 ```bash
 npm run db:dev:up
 ```
 
-
-Abrir interfaz de Prisma para visualizar la DB:
+Open Prisma interface to see the database:
 
 ```bash
 npx prisma studio
 ```
 
-## Installation
 
-```bash
-$ npm install
-```
 
 ## Running the app
 
