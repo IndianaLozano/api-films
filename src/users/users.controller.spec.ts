@@ -18,7 +18,7 @@ describe('UsersController', () => {
   });
 
   describe('signUp', () => {
-    it('should create a new user', async () => {
+    it('should create a new user - 200 OK', async () => {
       const userDto: UserDto = {
         username: 'testuser',
         password: 'testpassword',
