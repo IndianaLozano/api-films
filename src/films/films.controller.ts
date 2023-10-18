@@ -1,8 +1,9 @@
-import { Controller, Get, UseGuards, Param } from '@nestjs/common';
+import { Controller, Get, UseGuards, Param, Body, Post } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { Role } from 'src/enum/role.enum';
 import { RoleAccess } from 'src/decorators/role.access.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { CreateFilmDto } from './dto/create-film.dto';
 @Controller('/films')
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
@@ -17,5 +18,12 @@ export class FilmsController {
   @RoleAccess(Role.User)
   async getFilm(@Param('id') id: string) {
     return this.filmsService.getFilm(id);
+  }
+
+  @Post('')
+  @UseGuards(RolesGuard)
+  @RoleAccess(Role.Admin)
+  async createFilm(@Body() createFilmDto: CreateFilmDto) {
+    return this.filmsService.createFilm(createFilmDto);
   }
 }
